@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM AI</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #050914;
+  color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+header {
+  padding: 22px;
+  border-bottom: 1px solid #123b65;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  color: #36baff;
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 0 0 18px #008cff;
+}
+main {
+  max-width: 850px;
+  margin: 45px auto;
+  padding: 20px;
+}
+h1 { font-size: 42px; }
+h1 span { color: #36baff; }
+.subtitle { color: #9bb3ce; }
+.chat {
+  margin-top: 30px;
+  min-height: 300px;
+  padding: 20px;
+  border: 1px solid #164b79;
+  border-radius: 18px;
+  background: #0a1425;
+}
+.message {
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.sam { background: #102b49; }
+.user { background: #174d72; text-align: right; }
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #2369a0;
+  background: #0b1728;
+  color: white;
+  font-size: 16px;
+}
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  background: #0789df;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover { background: #24aaff; }
+.modes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+footer { color: #66839e; text-align: center; margin: 30px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SAM AI</div>
+  <span>✦ Your AI Assistant</span>
+</header>
+<main>
+  <h1>Hey! I'm <span>SAM AI.</span></h1>
+  <p class="subtitle">Hey! What are we creating today?</p>
+  <div class="modes">
+    <button onclick="setMode('Genius')">🧠 Genius</button>
+    <button onclick="setMode('Cool')">😎 Cool</button>
+    <button onclick="setMode('Futuristic')">🤖 Futuristic</button>
+    <button onclick="setMode('Auto')">✨ Auto</button>
+  </div>
+  <div class="chat" id="chat">
+    <div class="message sam">
+      🤖 SAM: Welcome! I'm ready to help you create something amazing!
+    </div>
+  </div>
+  <div class="controls">
+    <input id="prompt" placeholder="Message SAM AI..."
+      onkeydown="if(event.key==='Enter')sendMessage()">
+    <button onclick="sendMessage()">SEND ➤</button>
+  </div>
+  <footer> SAM AI · Your ideas, your imagination.</footer>
+</main>
+<script>
+let mode = "Auto";
+
+function setMode(name) {
+  mode = name;
+  addMessage("SAM", "Personality changed to " + name + " mode.", "sam");
+}
+
+function addMessage(name, text, type) {
+  const chat = document.getElementById("chat");
+  const message = document.createElement("div");
+  message.className = "message " + type;
+  message.textContent = (name === "You" ? "You: " : "🤖 SAM: ") + text;
+  chat.appendChild(message);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById("prompt");
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage("You", text, "user");
+  input.value = "";
+
+  setTimeout(() => {
+    addMessage("SAM",
+      "I received your message! My " + mode +
+      " personality is selected. Connect an AI service to enable real AI conversations.",
+      "sam");
+  }, 500);
+}
+</script>
+</body>
+</html>
