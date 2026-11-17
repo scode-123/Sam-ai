@@ -2,142 +2,218 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SAM AI</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: #050914;
-  color: white;
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
+*{box-sizing:border-box}
+body{margin:0;background:#050914;color:white;font-family:Arial,sans-serif}
+header{padding:18px 24px;border-bottom:1px solid #164c79;display:flex;align-items:center;gap:12px}
+.logo{font-size:27px;font-weight:bold;color:#32baff;text-shadow:0 0 18px #008cff}
+.layout{display:flex;max-width:1200px;margin:auto;min-height:90vh}
+aside{width:230px;padding:20px;border-right:1px solid #153451}
+main{flex:1;padding:30px;min-width:0}
+button{background:#078cdb;color:white;border:0;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:bold}
+button:hover{background:#24aaff}
+.secondary{background:#132943;border:1px solid #20517b}
+aside button{width:100%;margin:6px 0}
+.robot{font-size:70px;text-align:center;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+h1{font-size:38px;text-align:center}
+h1 span{color:#35baff}
+.sub{text-align:center;color:#9ab8d6}
+.modes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+.chat{background:#091629;border:1px solid #19517e;border-radius:18px;padding:16px;min-height:280px;max-height:440px;overflow-y:auto}
+.message{padding:14px;margin:10px 0;border-radius:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.sam{background:#122d4b}
+.user{background:#155274;text-align:right}
+.controls{display:flex;gap:8px;margin-top:14px}
+input{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d;padding:15px;border-radius:10px;font-size:16px}
+.small{font-size:12px;color:#7898b5;margin-top:15px}
+#history button{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:650px){
+ .layout{display:block}
+ aside{width:100%;border-right:0;border-bottom:1px solid #153451}
+ aside .history-list{display:flex;overflow:auto;gap:6px}
+ aside .history-list button{min-width:130px}
+ main{padding:16px}
+ h1{font-size:30px}
 }
-header {
-  padding: 22px;
-  border-bottom: 1px solid #123b65;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.logo {
-  color: #36baff;
-  font-size: 30px;
-  font-weight: bold;
-  text-shadow: 0 0 18px #008cff;
-}
-main {
-  max-width: 850px;
-  margin: 45px auto;
-  padding: 20px;
-}
-h1 { font-size: 42px; }
-h1 span { color: #36baff; }
-.subtitle { color: #9bb3ce; }
-.chat {
-  margin-top: 30px;
-  min-height: 300px;
-  padding: 20px;
-  border: 1px solid #164b79;
-  border-radius: 18px;
-  background: #0a1425;
-}
-.message {
-  padding: 14px;
-  margin: 12px 0;
-  border-radius: 12px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-}
-.sam { background: #102b49; }
-.user { background: #174d72; text-align: right; }
-.controls {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-input {
-  flex: 1;
-  min-width: 0;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #2369a0;
-  background: #0b1728;
-  color: white;
-  font-size: 16px;
-}
-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 14px 20px;
-  background: #0789df;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-button:hover { background: #24aaff; }
-.modes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-footer { color: #66839e; text-align: center; margin: 30px; }
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">SAM AI</div>
-  <span>✦ Your AI Assistant</span>
+ <div class="logo">✦ SAM AI</div>
+ <span>Your futuristic assistant</span>
 </header>
+
+<div class="layout">
+<aside>
+ <button onclick="newChat()">＋ New Chat</button>
+ <h3>💾 Chat History</h3>
+ <div id="history" class="history-list"></div>
+ <p class="small">Your conversations are saved in this browser.</p>
+</aside>
+
 <main>
-  <h1>Hey! I'm <span>SAM AI.</span></h1>
-  <p class="subtitle">Hey! What are we creating today?</p>
-  <div class="modes">
-    <button onclick="setMode('Genius')">🧠 Genius</button>
-    <button onclick="setMode('Cool')">😎 Cool</button>
-    <button onclick="setMode('Futuristic')">🤖 Futuristic</button>
-    <button onclick="setMode('Auto')">✨ Auto</button>
-  </div>
-  <div class="chat" id="chat">
-    <div class="message sam">
-      🤖 SAM: Welcome! I'm ready to help you create something amazing!
-    </div>
-  </div>
-  <div class="controls">
-    <input id="prompt" placeholder="Message SAM AI..."
-      onkeydown="if(event.key==='Enter')sendMessage()">
-    <button onclick="sendMessage()">SEND ➤</button>
-  </div>
-  <footer> SAM AI · Your ideas, your imagination.</footer>
+ <div class="robot">🤖</div>
+ <h1>Hey! I'm <span>SAM AI</span></h1>
+ <p class="sub">What are we creating today?</p>
+
+ <div class="modes">
+  <button onclick="setMode('Genius')">🧠 Genius</button>
+  <button onclick="setMode('Cool')">😎 Cool</button>
+  <button onclick="setMode('Futuristic')">🤖 Futuristic</button>
+  <button onclick="setMode('Auto')">✨ Auto</button>
+ </div>
+
+ <div class="modes">
+  <button class="secondary" onclick="quick('Help me with a game')">🎮 Gaming</button>
+  <button class="secondary" onclick="quick('Help me write some code')">💻 Coding</button>
+  <button class="secondary" onclick="quick('Help me create a story')">✍️ Creative</button>
+ </div>
+
+ <div class="chat" id="chat">
+  <div class="message sam">🤖 SAM: Welcome! I'm ready to help you create something amazing!</div>
+ </div>
+
+ <div class="controls">
+  <input id="prompt" placeholder="Message SAM AI..."
+   onkeydown="if(event.key==='Enter')sendMessage()">
+  <button onclick="sendMessage()">SEND ➤</button>
+ </div>
+
+ <div class="modes">
+  <button class="secondary" onclick="speakLast()">🔊 Speak</button>
+  <button class="secondary" onclick="stopSpeaking()">🔇 Stop Voice</button>
+  <button class="secondary" onclick="pictureInfo()">🎨 Create Picture</button>
+  <button class="secondary" onclick="searchInfo()">🌐 Search</button>
+ </div>
+
+ <p class="small" id="status">SAM AI is ready. Real AI services still need to be connected.</p>
 </main>
+</div>
+
 <script>
-let mode = "Auto";
+let mode="Auto";
+let conversations=JSON.parse(localStorage.getItem("samChats")||"[]");
+let current=[];
+let lastReply="";
 
-function setMode(name) {
-  mode = name;
-  addMessage("SAM", "Personality changed to " + name + " mode.", "sam");
+function save(){
+ localStorage.setItem("samChats",JSON.stringify(conversations));
+ renderHistory();
 }
 
-function addMessage(name, text, type) {
-  const chat = document.getElementById("chat");
-  const message = document.createElement("div");
-  message.className = "message " + type;
-  message.textContent = (name === "You" ? "You: " : "🤖 SAM: ") + text;
-  chat.appendChild(message);
-  chat.scrollTop = chat.scrollHeight;
+function addMessage(who,text){
+ current.push({who,text});
+ const el=document.createElement("div");
+ el.className="message "+(who==="You"?"user":"sam");
+ el.textContent=(who==="You"?"You: ":"🤖 SAM: ")+text;
+ document.getElementById("chat").appendChild(el);
+ document.getElementById("chat").scrollTop=999999;
+ if(who==="SAM")lastReply=text;
 }
 
-function sendMessage() {
-  const input = document.getElementById("prompt");
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMessage("You", text, "user");
-  input.value = "";
-
-  setTimeout(() => {
-    addMessage("SAM",
-      "I received your message! My " + mode +
-      " personality is selected. Connect an AI service to enable real AI conversations.",
-      "sam");
-  }, 500);
+function setMode(name){
+ mode=name;
+ document.getElementById("status").textContent="Personality: "+name;
+ addMessage("SAM","Your personality is now set to "+name+" mode.");
+ saveCurrent();
 }
+
+function saveCurrent(){
+ if(!current.length)return;
+ if(!current.id)current.id=Date.now();
+ const index=conversations.findIndex(c=>c.id===current.id);
+ const item={id:current.id,messages:current};
+ if(index>=0)conversations[index]=item;
+ else conversations.unshift(item);
+ save();
+}
+
+function renderHistory(){
+ const box=document.getElementById("history");
+ box.innerHTML="";
+ conversations.forEach(c=>{
+  const b=document.createElement("button");
+  b.className="secondary";
+  b.textContent=c.messages.find(m=>m.who==="You")?.text||"New conversation";
+  b.onclick=()=>loadChat(c.id);
+  box.appendChild(b);
+ });
+}
+
+function loadChat(id){
+ const item=conversations.find(c=>c.id===id);
+ if(!item)return;
+ current=item.messages.slice();
+ current.id=id;
+ drawChat();
+}
+
+function drawChat(){
+ const box=document.getElementById("chat");
+ box.innerHTML="";
+ current.forEach(m=>{
+  const el=document.createElement("div");
+  el.className="message "+(m.who==="You"?"user":"sam");
+  el.textContent=(m.who==="You"?"You: ":"🤖 SAM: ")+m.text;
+  box.appendChild(el);
+ });
+ box.scrollTop=999999;
+}
+
+function newChat(){
+ current=[];
+ current.id=null;
+ document.getElementById("chat").innerHTML="";
+ addMessage("SAM","Welcome back! What shall we create?");
+}
+
+function quick(text){
+ document.getElementById("prompt").value=text;
+ sendMessage();
+}
+
+function sendMessage(){
+ const input=document.getElementById("prompt");
+ const text=input.value.trim();
+ if(!text)return;
+ addMessage("You",text);
+ input.value="";
+ const reply="I received your message! My "+mode+
+ " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
+ addMessage("SAM",reply);
+ saveCurrent();
+}
+
+function speakLast(){
+ if(!lastReply){alert("SAM has not replied yet.");return;}
+ if(!("speechSynthesis" in window)){
+  alert("Voice is not supported by this browser.");return;
+ }
+ speechSynthesis.cancel();
+ const voice=new SpeechSynthesisUtterance(lastReply);
+ voice.rate=0.95;
+ voice.pitch=0.85;
+ speechSynthesis.speak(voice);
+}
+
+function stopSpeaking(){
+ if("speechSynthesis" in window)speechSynthesis.cancel();
+}
+
+function pictureInfo(){
+ addMessage("SAM","Picture generation is coming soon! It needs a secure image-generation service.");
+ saveCurrent();
+}
+
+function searchInfo(){
+ addMessage("SAM","Internet search is coming soon! It needs a secure search service.");
+ saveCurrent();
+}
+
+renderHistory();
 </script>
 </body>
 </html>
