@@ -508,8 +508,18 @@ function addMessage(who,text){
 
  el.className="message "+(who==="You"?"user":"sam");
 
- el.textContent=
-  (who==="You"?"You: ":"🤖 SAM: ")+text;
+ if (who === "SAM") {
+  const avatar = document.createElement("img");
+  avatar.src = "Neon%20Robot%20Laptop%20Thumbs-Up.png";
+  avatar.alt = "SAM AI";
+  avatar.className = "sam-avatar";
+  el.appendChild(avatar);
+}
+
+const messageText = document.createElement("span");
+messageText.textContent =
+  (who === "You" ? "You: " : "SAM: ") + text;
+el.appendChild(messageText);
 
  document.getElementById("chat").appendChild(el);
 
