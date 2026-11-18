@@ -1,78 +1,296 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SAM AI</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#050914;color:white;font-family:Arial,sans-serif}
-header{padding:18px 24px;border-bottom:1px solid #164c79;display:flex;align-items:center;gap:12px}
-.logo{font-size:27px;font-weight:bold;color:#32baff;text-shadow:0 0 18px #008cff}
-.layout{display:flex;max-width:1200px;margin:auto;min-height:90vh}
-aside{width:230px;padding:20px;border-right:1px solid #153451}
-main{flex:1;padding:30px;min-width:0}
-button{background:#078cdb;color:white;border:0;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:bold}
+
+body{
+ margin:0;
+ background:#050914;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+
+header{
+ padding:18px 24px;
+ border-bottom:1px solid #164c79;
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.logo{
+ font-size:27px;
+ font-weight:bold;
+ color:#32baff;
+ text-shadow:0 0 18px #008cff;
+}
+
+.layout{
+ display:flex;
+ max-width:1200px;
+ margin:auto;
+ min-height:90vh;
+}
+
+aside{
+ width:250px;
+ padding:20px;
+ border-right:1px solid #153451;
+}
+
+main{
+ flex:1;
+ padding:30px;
+ min-width:0;
+}
+
+button{
+ background:#078cdb;
+ color:white;
+ border:0;
+ padding:12px 16px;
+ border-radius:10px;
+ cursor:pointer;
+ font-weight:bold;
+}
+
 button:hover{background:#24aaff}
-.secondary{background:#132943;border:1px solid #20517b}
-aside button{width:100%;margin:6px 0}
-.robot{font-size:70px;text-align:center;animation:float 3s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-12px)}}
-h1{font-size:38px;text-align:center}
+
+.secondary{
+ background:#132943;
+ border:1px solid #20517b;
+}
+
+aside button{
+ width:100%;
+ margin:6px 0;
+}
+
+.robot{
+ font-size:70px;
+ text-align:center;
+ animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+ 50%{transform:translateY(-12px)}
+}
+
+h1{
+ font-size:38px;
+ text-align:center;
+}
+
 h1 span{color:#35baff}
-.sub{text-align:center;color:#9ab8d6}
-.modes{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:22px 0}
-.chat{background:#091629;border:1px solid #19517e;border-radius:18px;padding:16px;min-height:280px;max-height:440px;overflow-y:auto}
-.message{padding:14px;margin:10px 0;border-radius:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+
+.sub{
+ text-align:center;
+ color:#9ab8d6;
+}
+
+.modes{
+ display:flex;
+ gap:8px;
+ justify-content:center;
+ flex-wrap:wrap;
+ margin:22px 0;
+}
+
+.chat{
+ background:#091629;
+ border:1px solid #19517e;
+ border-radius:18px;
+ padding:16px;
+ min-height:280px;
+ max-height:440px;
+ overflow-y:auto;
+}
+
+.message{
+ padding:14px;
+ margin:10px 0;
+ border-radius:12px;
+ line-height:1.5;
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
+}
+
 .sam{background:#122d4b}
-.user{background:#155274;text-align:right}
-.controls{display:flex;gap:8px;margin-top:14px}
-input[type="text"]{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d;padding:15px;border-radius:10px;font-size:16px}
-.small{font-size:12px;color:#9ab8d6;margin-top:15px}
-#history button{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.privacy{background:#091629;border:1px solid #19517e;border-radius:12px;padding:14px;margin-top:18px}
-.privacy label{display:flex;align-items:center;gap:10px;color:#b9d8f2}
-.privacy input{flex:0;width:18px;height:18px}
+
+.user{
+ background:#155274;
+ text-align:right;
+}
+
+.controls{
+ display:flex;
+ gap:8px;
+ margin-top:14px;
+}
+
+.controls input{
+ flex:1;
+ min-width:0;
+ background:#0b192c;
+ color:white;
+ border:1px solid #28618d;
+ padding:15px;
+ border-radius:10px;
+ font-size:16px;
+}
+
+.small{
+ font-size:12px;
+ color:#9ab8d6;
+ margin-top:15px;
+}
+
+#history button{
+ text-align:left;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.privacy{
+ background:#091629;
+ border:1px solid #19517e;
+ border-radius:12px;
+ padding:14px;
+ margin-top:18px;
+}
+
+.privacy label{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ color:#b9d8f2;
+}
+
+.privacy input{
+ width:18px;
+ height:18px;
+}
+
 .privacy button{margin-top:12px}
+
+.privacy-page{
+ background:#091629;
+ border:1px solid #19517e;
+ border-radius:14px;
+ padding:16px;
+ margin-top:20px;
+}
+
+.privacy-page summary{
+ color:#35baff;
+ font-weight:bold;
+ cursor:pointer;
+}
+
+.privacy-page h3{color:#35baff}
+
+.privacy-page p{
+ color:#b9d8f2;
+ line-height:1.6;
+}
+
 @media(max-width:650px){
  .layout{display:block}
- aside{width:100%;border-right:0;border-bottom:1px solid #153451}
- aside .history-list{display:flex;overflow:auto;gap:6px}
+ aside{
+  width:100%;
+  border-right:0;
+  border-bottom:1px solid #153451;
+ }
+ aside .history-list{
+  display:flex;
+  overflow:auto;
+  gap:6px;
+ }
  aside .history-list button{min-width:130px}
  main{padding:16px}
  h1{font-size:30px}
 }
 </style>
 </head>
+
 <body>
+
 <header>
  <div class="logo">✦ SAM AI</div>
  <span>Your futuristic assistant</span>
 </header>
 
 <div class="layout">
+
 <aside>
+
  <button onclick="newChat()">＋ New Chat</button>
+
  <h3>💾 Chat History</h3>
+
  <div id="history" class="history-list"></div>
 
  <div class="privacy">
+
   <label>
    <input type="checkbox" id="saveChats">
    Save my chats on this device
   </label>
+
   <button class="secondary" onclick="clearSavedChats()">
    🗑️ Clear Saved Chats
   </button>
+
   <p class="small" id="privacyStatus">
-   Chat saving is OFF. Your conversations are not saved.
+   Chat saving is OFF.
   </p>
+
  </div>
+
+ <details class="privacy-page">
+
+  <summary>🔒 Privacy & Security</summary>
+
+  <h3>Your privacy matters!</h3>
+
+  <p><strong>Chat saving:</strong>
+  Chat saving is OFF by default. You decide whether to save conversations.</p>
+
+  <p><strong>Where chats are stored:</strong>
+  When saving is ON, conversations are stored in this browser on this device.</p>
+
+  <p><strong>Deleting chats:</strong>
+  Use Clear Saved Chats to delete saved conversations from this browser.</p>
+
+  <p><strong>AI connection:</strong>
+  Real AI, internet search and picture generation are not connected yet. This version does not send chat messages to an AI server.</p>
+
+  <p><strong>Personal information:</strong>
+  Do not enter passwords, financial details or other sensitive information.</p>
+
+  <p><strong>Website code:</strong>
+  The public website code can be viewed and copied by visitors.</p>
+
+  <p><strong>Important:</strong>
+  Clearing saved chats removes them from this browser's local storage. It does not delete copies someone may have made elsewhere.</p>
+
+ </details>
+
 </aside>
 
 <main>
+
  <div class="robot">🤖</div>
+
  <h1>Hey! I'm <span>SAM AI</span></h1>
+
  <p class="sub">What are we creating today?</p>
 
  <div class="modes">
@@ -88,12 +306,16 @@ input[type="text"]{flex:1;min-width:0;background:#0b192c;color:white;border:1px 
  </div>
 
  <div class="chat" id="chat">
-  <div class="message sam">🤖 SAM: Welcome! I'm ready to help you create something amazing!</div>
+  <div class="message sam">
+   🤖 SAM: Welcome! I'm ready to help you create something amazing!
+  </div>
  </div>
 
  <div class="controls">
-  <input type="text" id="prompt" placeholder="Message SAM AI..."
+  <input type="text" id="prompt"
+   placeholder="Message SAM AI..."
    onkeydown="if(event.key==='Enter')sendMessage()">
+
   <button onclick="sendMessage()">SEND ➤</button>
  </div>
 
@@ -104,11 +326,15 @@ input[type="text"]{flex:1;min-width:0;background:#0b192c;color:white;border:1px 
   <button class="secondary" onclick="searchInfo()">🌐 Search</button>
  </div>
 
- <p class="small" id="status">SAM AI is ready. Real AI services still need to be connected.</p>
+ <p class="small" id="status">
+  SAM AI is ready. Real AI services still need to be connected.
+ </p>
+
 </main>
 </div>
 
 <script>
+
 let mode="Auto";
 let saveEnabled=false;
 let conversations=[];
@@ -119,145 +345,242 @@ const chatStorage="samChats";
 const preferenceStorage="samSaveChats";
 
 function loadSavedChats(){
+
  try{
+
   saveEnabled=localStorage.getItem(preferenceStorage)==="true";
 
   if(saveEnabled){
-   conversations=JSON.parse(localStorage.getItem(chatStorage)||"[]");
-   if(!Array.isArray(conversations))conversations=[];
+   conversations=JSON.parse(
+    localStorage.getItem(chatStorage)||"[]"
+   );
+
+   if(!Array.isArray(conversations)){
+    conversations=[];
+   }
+
   }else{
    localStorage.removeItem(chatStorage);
    conversations=[];
   }
+
  }catch(error){
+
   saveEnabled=false;
   conversations=[];
+
  }
+
  document.getElementById("saveChats").checked=saveEnabled;
+
  updatePrivacy();
  renderHistory();
+
 }
 
 function updatePrivacy(){
+
  document.getElementById("privacyStatus").textContent=
   saveEnabled
-   ?"Chat saving is ON. Chats are saved in this browser."
-   :"Chat saving is OFF. Your conversations are not saved.";
+  ?"Chat saving is ON. Chats are saved in this browser."
+  :"Chat saving is OFF. Your conversations are not saved.";
+
 }
 
 function toggleSaving(){
+
  const checkbox=document.getElementById("saveChats");
+
  saveEnabled=checkbox.checked;
 
  try{
+
   if(saveEnabled){
+
    localStorage.setItem(preferenceStorage,"true");
    saveCurrent();
+
   }else{
+
    localStorage.setItem(preferenceStorage,"false");
    localStorage.removeItem(chatStorage);
+
    conversations=[];
    renderHistory();
+
   }
+
  }catch(error){
+
   saveEnabled=false;
   checkbox.checked=false;
+
   alert("Your browser could not change the saving setting.");
+
  }
 
  updatePrivacy();
+
 }
 
 function save(){
+
  if(!saveEnabled)return;
 
  try{
-  localStorage.setItem(chatStorage,JSON.stringify(conversations));
+
+  localStorage.setItem(
+   chatStorage,
+   JSON.stringify(conversations)
+  );
+
   renderHistory();
+
  }catch(error){
+
   document.getElementById("privacyStatus").textContent=
    "Could not save chats in this browser.";
+
  }
+
 }
 
 function addMessage(who,text){
+
  current.push({who,text});
+
  const el=document.createElement("div");
+
  el.className="message "+(who==="You"?"user":"sam");
- el.textContent=(who==="You"?"You: ":"🤖 SAM: ")+text;
+
+ el.textContent=
+  (who==="You"?"You: ":"🤖 SAM: ")+text;
+
  document.getElementById("chat").appendChild(el);
+
  document.getElementById("chat").scrollTop=999999;
+
  if(who==="SAM")lastReply=text;
+
 }
 
 function setMode(name){
+
  mode=name;
- document.getElementById("status").textContent="Personality: "+name;
+
+ document.getElementById("status").textContent=
+  "Personality: "+name;
+
  addMessage("SAM","Your personality is now set to "+name+" mode.");
+
  saveCurrent();
+
 }
 
 function saveCurrent(){
+
  if(!saveEnabled||!current.length)return;
 
  if(!current.id)current.id=Date.now();
 
- const index=conversations.findIndex(c=>c.id===current.id);
- const item={id:current.id,messages:current};
+ const index=conversations.findIndex(
+  c=>c.id===current.id
+ );
 
- if(index>=0)conversations[index]=item;
- else conversations.unshift(item);
+ const item={
+  id:current.id,
+  messages:current
+ };
+
+ if(index>=0){
+  conversations[index]=item;
+ }else{
+  conversations.unshift(item);
+ }
 
  save();
+
 }
 
 function renderHistory(){
+
  const box=document.getElementById("history");
+
  box.innerHTML="";
 
  conversations.forEach(c=>{
+
   const b=document.createElement("button");
+
   b.className="secondary";
-  b.textContent=c.messages.find(m=>m.who==="You")?.text||"New conversation";
+
+  b.textContent=
+   c.messages.find(m=>m.who==="You")?.text||
+   "New conversation";
+
   b.onclick=()=>loadChat(c.id);
+
   box.appendChild(b);
+
  });
+
 }
 
 function loadChat(id){
+
  if(!saveEnabled)return;
 
  const item=conversations.find(c=>c.id===id);
+
  if(!item)return;
 
  current=item.messages.slice();
+
  current.id=id;
+
  drawChat();
+
 }
 
 function drawChat(){
+
  const box=document.getElementById("chat");
+
  box.innerHTML="";
 
  current.forEach(m=>{
+
   const el=document.createElement("div");
+
   el.className="message "+(m.who==="You"?"user":"sam");
-  el.textContent=(m.who==="You"?"You: ":"🤖 SAM: ")+m.text;
+
+  el.textContent=
+   (m.who==="You"?"You: ":"🤖 SAM: ")+m.text;
+
   box.appendChild(el);
+
  });
 
  box.scrollTop=999999;
+
 }
 
 function newChat(){
+
  current=[];
  current.id=null;
+
  document.getElementById("chat").innerHTML="";
+
  addMessage("SAM","Welcome back! What shall we create?");
+
 }
 
 function clearSavedChats(){
- if(!confirm("Are you sure you want to delete all saved conversations?"))return;
+
+ if(!confirm("Are you sure you want to delete all saved conversations?")){
+  return;
+ }
 
  try{
   localStorage.removeItem(chatStorage);
@@ -265,33 +588,52 @@ function clearSavedChats(){
 
  conversations=[];
  current=[];
+ current.id=null;
+
  document.getElementById("chat").innerHTML="";
+
  addMessage("SAM","Your saved conversations have been cleared.");
+
  renderHistory();
+
 }
 
 function quick(text){
+
  document.getElementById("prompt").value=text;
+
  sendMessage();
+
 }
 
 function sendMessage(){
+
  const input=document.getElementById("prompt");
+
  const text=input.value.trim();
+
  if(!text)return;
 
  addMessage("You",text);
+
  input.value="";
 
- const reply="I received your message! My "+mode+
- " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
+ const reply=
+  "I received your message! My "+mode+
+  " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
 
  addMessage("SAM",reply);
+
  saveCurrent();
+
 }
 
 function speakLast(){
- if(!lastReply){alert("SAM has not replied yet.");return;}
+
+ if(!lastReply){
+  alert("SAM has not replied yet.");
+  return;
+ }
 
  if(!("speechSynthesis" in window)){
   alert("Voice is not supported by this browser.");
@@ -299,29 +641,52 @@ function speakLast(){
  }
 
  speechSynthesis.cancel();
+
  const voice=new SpeechSynthesisUtterance(lastReply);
+
  voice.rate=0.95;
  voice.pitch=0.85;
+
  speechSynthesis.speak(voice);
+
 }
 
 function stopSpeaking(){
- if("speechSynthesis" in window)speechSynthesis.cancel();
+
+ if("speechSynthesis" in window){
+  speechSynthesis.cancel();
+ }
+
 }
 
 function pictureInfo(){
- addMessage("SAM","Picture generation is coming soon! It needs a secure image-generation service.");
+
+ addMessage(
+  "SAM",
+  "Picture generation is coming soon! It needs a secure image-generation service."
+ );
+
  saveCurrent();
+
 }
 
 function searchInfo(){
- addMessage("SAM","Internet search is coming soon! It needs a secure search service.");
+
+ addMessage(
+  "SAM",
+  "Internet search is coming soon! It needs a secure search service."
+ );
+
  saveCurrent();
+
 }
 
-document.getElementById("saveChats").addEventListener("change",toggleSaving);
+document.getElementById("saveChats")
+ .addEventListener("change",toggleSaving);
 
 loadSavedChats();
+
 </script>
+
 </body>
 </html>
