@@ -192,6 +192,16 @@ h1 span{color:#35baff}
  color:#35baff;
  font-weight:bold;
  cursor:pointer;
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+
+.privacy-icon{
+ width:30px;
+ height:30px;
+ flex:0 0 30px;
+ filter:drop-shadow(0 0 7px #078cdb);
 }
 
 .privacy-page h3{color:#35baff}
@@ -223,7 +233,7 @@ h1 span{color:#35baff}
 <body>
 
 <header>
- <div class="logo">✦ SAM AI</div>
+ <div class="logo">👍 SAM AI</div>
  <span>Your futuristic assistant</span>
 </header>
 
@@ -256,7 +266,28 @@ h1 span{color:#35baff}
 
  <details class="privacy-page">
 
-  <summary>🔒 Privacy & Security</summary>
+ <summary>
+ <svg class="privacy-icon" viewBox="0 0 64 64"
+      role="img" aria-label="Shield with a lock">
+
+  <path d="M32 4 55 13v16c0 15-9.5 25.5-23 31C18.5 54.5 9 44 9 29V13L32 4Z"
+   fill="#087fc4" stroke="#43c5ff" stroke-width="3"/>
+
+  <path d="M23 29v-5a9 9 0 0 1 18 0v5"
+   fill="none" stroke="white" stroke-width="4"
+   stroke-linecap="round"/>
+
+  <rect x="19" y="28" width="26" height="20"
+   rx="4" fill="white"/>
+
+  <circle cx="32" cy="37" r="2.8" fill="#087fc4"/>
+
+  <path d="M32 39v4" stroke="#087fc4"
+   stroke-width="2.5" stroke-linecap="round"/>
+ </svg>
+
+ Privacy & Security
+</summary>
 
   <h3>Your privacy matters!</h3>
 
