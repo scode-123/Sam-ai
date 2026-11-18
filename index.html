@@ -27,9 +27,13 @@ h1 span{color:#35baff}
 .sam{background:#122d4b}
 .user{background:#155274;text-align:right}
 .controls{display:flex;gap:8px;margin-top:14px}
-input{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d;padding:15px;border-radius:10px;font-size:16px}
-.small{font-size:12px;color:#7898b5;margin-top:15px}
+input[type="text"]{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d;padding:15px;border-radius:10px;font-size:16px}
+.small{font-size:12px;color:#9ab8d6;margin-top:15px}
 #history button{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.privacy{background:#091629;border:1px solid #19517e;border-radius:12px;padding:14px;margin-top:18px}
+.privacy label{display:flex;align-items:center;gap:10px;color:#b9d8f2}
+.privacy input{flex:0;width:18px;height:18px}
+.privacy button{margin-top:12px}
 @media(max-width:650px){
  .layout{display:block}
  aside{width:100%;border-right:0;border-bottom:1px solid #153451}
@@ -51,7 +55,19 @@ input{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d
  <button onclick="newChat()">＋ New Chat</button>
  <h3>💾 Chat History</h3>
  <div id="history" class="history-list"></div>
- <p class="small">Your conversations are saved in this browser.</p>
+
+ <div class="privacy">
+  <label>
+   <input type="checkbox" id="saveChats">
+   Save my chats on this device
+  </label>
+  <button class="secondary" onclick="clearSavedChats()">
+   🗑️ Clear Saved Chats
+  </button>
+  <p class="small" id="privacyStatus">
+   Chat saving is OFF. Your conversations are not saved.
+  </p>
+ </div>
 </aside>
 
 <main>
@@ -76,7 +92,7 @@ input{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d
  </div>
 
  <div class="controls">
-  <input id="prompt" placeholder="Message SAM AI..."
+  <input type="text" id="prompt" placeholder="Message SAM AI..."
    onkeydown="if(event.key==='Enter')sendMessage()">
   <button onclick="sendMessage()">SEND ➤</button>
  </div>
@@ -94,13 +110,74 @@ input{flex:1;min-width:0;background:#0b192c;color:white;border:1px solid #28618d
 
 <script>
 let mode="Auto";
-let conversations=JSON.parse(localStorage.getItem("samChats")||"[]");
+let saveEnabled=false;
+let conversations=[];
 let current=[];
 let lastReply="";
 
-function save(){
- localStorage.setItem("samChats",JSON.stringify(conversations));
+const chatStorage="samChats";
+const preferenceStorage="samSaveChats";
+
+function loadSavedChats(){
+ try{
+  saveEnabled=localStorage.getItem(preferenceStorage)==="true";
+
+  if(saveEnabled){
+   conversations=JSON.parse(localStorage.getItem(chatStorage)||"[]");
+   if(!Array.isArray(conversations))conversations=[];
+  }else{
+   localStorage.removeItem(chatStorage);
+   conversations=[];
+  }
+ }catch(error){
+  saveEnabled=false;
+  conversations=[];
+ }
+ document.getElementById("saveChats").checked=saveEnabled;
+ updatePrivacy();
  renderHistory();
+}
+
+function updatePrivacy(){
+ document.getElementById("privacyStatus").textContent=
+  saveEnabled
+   ?"Chat saving is ON. Chats are saved in this browser."
+   :"Chat saving is OFF. Your conversations are not saved.";
+}
+
+function toggleSaving(){
+ const checkbox=document.getElementById("saveChats");
+ saveEnabled=checkbox.checked;
+
+ try{
+  if(saveEnabled){
+   localStorage.setItem(preferenceStorage,"true");
+   saveCurrent();
+  }else{
+   localStorage.setItem(preferenceStorage,"false");
+   localStorage.removeItem(chatStorage);
+   conversations=[];
+   renderHistory();
+  }
+ }catch(error){
+  saveEnabled=false;
+  checkbox.checked=false;
+  alert("Your browser could not change the saving setting.");
+ }
+
+ updatePrivacy();
+}
+
+function save(){
+ if(!saveEnabled)return;
+
+ try{
+  localStorage.setItem(chatStorage,JSON.stringify(conversations));
+  renderHistory();
+ }catch(error){
+  document.getElementById("privacyStatus").textContent=
+   "Could not save chats in this browser.";
+ }
 }
 
 function addMessage(who,text){
@@ -121,18 +198,23 @@ function setMode(name){
 }
 
 function saveCurrent(){
- if(!current.length)return;
+ if(!saveEnabled||!current.length)return;
+
  if(!current.id)current.id=Date.now();
+
  const index=conversations.findIndex(c=>c.id===current.id);
  const item={id:current.id,messages:current};
+
  if(index>=0)conversations[index]=item;
  else conversations.unshift(item);
+
  save();
 }
 
 function renderHistory(){
  const box=document.getElementById("history");
  box.innerHTML="";
+
  conversations.forEach(c=>{
   const b=document.createElement("button");
   b.className="secondary";
@@ -143,8 +225,11 @@ function renderHistory(){
 }
 
 function loadChat(id){
+ if(!saveEnabled)return;
+
  const item=conversations.find(c=>c.id===id);
  if(!item)return;
+
  current=item.messages.slice();
  current.id=id;
  drawChat();
@@ -153,12 +238,14 @@ function loadChat(id){
 function drawChat(){
  const box=document.getElementById("chat");
  box.innerHTML="";
+
  current.forEach(m=>{
   const el=document.createElement("div");
   el.className="message "+(m.who==="You"?"user":"sam");
   el.textContent=(m.who==="You"?"You: ":"🤖 SAM: ")+m.text;
   box.appendChild(el);
  });
+
  box.scrollTop=999999;
 }
 
@@ -167,6 +254,20 @@ function newChat(){
  current.id=null;
  document.getElementById("chat").innerHTML="";
  addMessage("SAM","Welcome back! What shall we create?");
+}
+
+function clearSavedChats(){
+ if(!confirm("Are you sure you want to delete all saved conversations?"))return;
+
+ try{
+  localStorage.removeItem(chatStorage);
+ }catch(error){}
+
+ conversations=[];
+ current=[];
+ document.getElementById("chat").innerHTML="";
+ addMessage("SAM","Your saved conversations have been cleared.");
+ renderHistory();
 }
 
 function quick(text){
@@ -178,19 +279,25 @@ function sendMessage(){
  const input=document.getElementById("prompt");
  const text=input.value.trim();
  if(!text)return;
+
  addMessage("You",text);
  input.value="";
+
  const reply="I received your message! My "+mode+
  " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
+
  addMessage("SAM",reply);
  saveCurrent();
 }
 
 function speakLast(){
  if(!lastReply){alert("SAM has not replied yet.");return;}
+
  if(!("speechSynthesis" in window)){
-  alert("Voice is not supported by this browser.");return;
+  alert("Voice is not supported by this browser.");
+  return;
  }
+
  speechSynthesis.cancel();
  const voice=new SpeechSynthesisUtterance(lastReply);
  voice.rate=0.95;
@@ -212,7 +319,9 @@ function searchInfo(){
  saveCurrent();
 }
 
-renderHistory();
+document.getElementById("saveChats").addEventListener("change",toggleSaving);
+
+loadSavedChats();
 </script>
 </body>
 </html>
