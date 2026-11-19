@@ -255,6 +255,15 @@ h1 span{color:#35baff}
   vertical-align: middle;
   margin-right: 8px;
 }
+#sam-clock {
+  color: #35baff;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 8px;
+  text-shadow: 0 0 10px #008cff;
+  letter-spacing: 1px;
+}
 </style>
 </head>
 
@@ -266,6 +275,7 @@ h1 span{color:#35baff}
   SAM AI
  </div>
  <span>Your futuristic assistant</span>
+<div id="sam-clock"></div>
 </header>
 
 <div class="layout">
@@ -759,7 +769,30 @@ document.getElementById("saveChats")
  .addEventListener("change",toggleSaving);
 
 loadSavedChats();
+function updateSAMClock() {
+  const clock = document.getElementById("sam-clock");
+  if (!clock) return;
 
+  const now = new Date();
+
+  const time = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
+  const date = now.toLocaleDateString([], {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  });
+
+  clock.innerHTML = time + "<br>" + date;
+}
+
+updateSAMClock();
+setInterval(updateSAMClock, 1000);
 </script>
 
 </body>
