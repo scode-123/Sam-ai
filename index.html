@@ -406,7 +406,24 @@ h1 span{color:#35baff}
 
 </main>
 </div>
+function getSAMCurrentTime() {
+  const now = new Date();
 
+  return now.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+}
+
+function getSAMCurrentDate() {
+  return new Date().toLocaleDateString([], {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  });
+}
 <script>
 
 let mode="Auto";
@@ -701,7 +718,19 @@ function sendMessage(){
  addMessage("You",text);
 
  input.value="";
+const question = text.toLowerCase();
 
+if (question.includes("time")) {
+  addMessage("SAM", "The current time is " + getSAMCurrentTime() + ".");
+  saveCurrent();
+  return;
+}
+
+if (question.includes("date") || question.includes("day") || question.includes("year")) {
+  addMessage("SAM", "Today is " + getSAMCurrentDate() + ".");
+  saveCurrent();
+  return;
+}
  const reply=
   "I received your message! My "+mode+
   " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
