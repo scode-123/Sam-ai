@@ -730,10 +730,26 @@ if (question.includes("date") || question.includes("day") || question.includes("
   addMessage("SAM", "Today is " + getSAMCurrentDate() + ".");
   return;
 }
- const reply=
-  "I received your message! My "+mode+
-  " personality is selected. To give you real intelligent answers, my secure AI connection still needs to be set up.";
+let reply;
 
+if (question === "hi" || question === "hello" || question.includes("hey")) {
+  reply = "Hey! I'm SAM AI! 🤖 What can I help you with today?";
+}
+else if (question.includes("what's up") || question.includes("whats up")) {
+  reply = "Not much! Just running at full power! ⚡ What's up with you?";
+}
+else if (question.includes("who are you")) {
+  reply = "I'm SAM AI, your futuristic AI assistant! I can help with coding, gaming, ideas, and more! 🚀";
+}
+else if (question.includes("good morning")) {
+  reply = "Good morning! ☀️ Ready to make today awesome?";
+}
+else if (question.includes("good night")) {
+  reply = "Good night! 🌙 See you next time!";
+}
+else {
+  reply = "I received your message! My " + mode + " personality is selected. My real AI connection still needs to be set up.";
+}
  addMessage("SAM",reply);
 
  saveCurrent();
