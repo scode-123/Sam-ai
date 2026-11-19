@@ -722,13 +722,11 @@ const question = text.toLowerCase();
 
 if (question.includes("time")) {
   addMessage("SAM", "The current time is " + getSAMCurrentTime() + ".");
-  saveCurrent();
   return;
 }
 
 if (question.includes("date") || question.includes("day") || question.includes("year")) {
   addMessage("SAM", "Today is " + getSAMCurrentDate() + ".");
-  saveCurrent();
   return;
 }
  const reply=
